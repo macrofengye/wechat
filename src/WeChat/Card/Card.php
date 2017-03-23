@@ -843,16 +843,15 @@ class Card extends AbstractAPI
     }
 
     /**
-     * Get Api_ticket token cache key.
+     * Get ApiTicket token cache key.
      *
-     * @return string $this->ticketCacheKey
+     * @return string
      */
     public function getTicketCacheKey()
     {
-        if (is_null($this->ticketCacheKey)) {
-            return $this->ticketCachePrefix . $this->appId;
+        if (null === $this->ticketCacheKey) {
+            return $this->ticketCachePrefix . $this->getAccessToken()->getAppId();
         }
-
         return $this->ticketCacheKey;
     }
 
