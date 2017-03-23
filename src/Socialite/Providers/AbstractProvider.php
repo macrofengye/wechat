@@ -148,34 +148,27 @@ abstract class AbstractProvider implements ProviderInterface
     public function redirect($redirectUrl = null)
     {
         $state = null;
-
-        if (!is_null($redirectUrl)) {
+        if (null !== $redirectUrl) {
             $this->redirectUrl = $redirectUrl;
         }
-
         if ($this->usesState()) {
-            $state = sha1(uniqid(mt_rand(1, 1000000), true));
-            app()->component('session')->set('state', $state);
+            $state = $this->makeState();
         }
-
         return app()->component('response')->withRedirect($this->getAuthUrl($state));
     }
 
     /**
      * {@inheritdoc}
+     * @throws \Exception
      */
     public function user(AccessTokenInterface $token = null)
     {
-        if (is_null($token) && $this->hasInvalidState()) {
+        if (null === $token && $this->hasInvalidState()) {
             throw new InvalidStateException();
         }
-
         $token = $token ?: $this->getAccessToken($this->getCode());
-
         $user = $this->getUserByToken($token);
-
         $user = $this->mapUserToObject($user)->merge(['original' => $user]);
-
         return $user->setToken($token);
     }
 
@@ -457,19 +450,34 @@ abstract class AbstractProvider implements ProviderInterface
         if (is_null($key)) {
             return $array;
         }
-
         if (isset($array[$key])) {
             return $array[$key];
         }
-
         foreach (explode('.', $key) as $segment) {
             if (!is_array($array) || !array_key_exists($segment, $array)) {
                 return $default;
             }
-
             $array = $array[$segment];
         }
-
         return $array;
+    }
+
+    /**
+     * Put state to session storage and return it.
+     *
+     * @return string|bool
+     */
+    protected function makeState()
+    {
+        $state = sha1(uniqid(mt_rand(1, 1000000), true));
+        $session = app()->component('session');
+        if (is_callable([$session, 'put'])) {
+            $session->put('state', $state);
+        } elseif (is_callable([$session, 'set'])) {
+            $session->set('state', $state);
+        } else {
+            return false;
+        }
+        return $state;
     }
 }
