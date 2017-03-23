@@ -1,5 +1,4 @@
 <?php
-
 namespace WeChat\Socialite;
 
 use ArrayAccess;
@@ -33,11 +32,10 @@ class Config implements ArrayAccess
      *
      * @return mixed
      */
-    public function get($key, $default = null)
+    public function get($key = null, $default = null)
     {
         $config = $this->config;
-
-        if (is_null($key)) {
+        if (null === $key) {
             return $config;
         }
         if (isset($config[$key])) {
@@ -49,7 +47,6 @@ class Config implements ArrayAccess
             }
             $config = $config[$segment];
         }
-
         return $config;
     }
 
@@ -61,9 +58,9 @@ class Config implements ArrayAccess
      * @throws \Exception
      * @return array
      */
-    public function set($key, $value)
+    public function set($key = null, $value)
     {
-        if (is_null($key)) {
+        if (null === $key) {
             throw new InvalidArgumentException('Invalid config key.');
         }
         $keys = explode('.', $key);
