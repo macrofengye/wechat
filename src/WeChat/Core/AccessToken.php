@@ -104,7 +104,6 @@ class AccessToken
 
                 return $token[$this->tokenJsonKey];
             } catch (\Exception $e) {
-                logger(__FUNCTION__, [$e->getMessage()], APP_PATH . '/log/accessToken.log');
                 return null;
             }
         }
@@ -172,7 +171,6 @@ class AccessToken
         try {
             return $this->cache ?: $this->cache = new FilesystemCache(sys_get_temp_dir());
         } catch (\Exception $e) {
-            logger(__FUNCTION__, [$e->getMessage()], APP_PATH . '/log/accessToken.log');
             return null;
         }
     }
