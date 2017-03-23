@@ -23,17 +23,6 @@ class Guard extends ServerGuard
     protected $container;
 
     /**
-     * Guard constructor.
-     *
-     * @param string $token
-     * @param Request $request
-     */
-    public function __construct($token, Request $request = null)
-    {
-        parent::__construct($token, $request);
-    }
-
-    /**
      * Sets the container for use of event handlers.
      *
      * @param Container $container
@@ -58,7 +47,12 @@ class Guard extends ServerGuard
         if ($this->request->getParam('auth_code')) {
             return $this->response->write('success');
         }
-        $this->handleMessage($this->getMessage());
+        $message = $this->getMessage();
+        $this->handleMessage($message);
+        // Handle Messages.
+        if (isset($message['MsgType'])) {
+            return parent::serve();
+        }
         return $this->response->write('success');
     }
 
@@ -108,6 +102,9 @@ class Guard extends ServerGuard
         try {
             if (is_array($message)) {
                 $message = new Collection($message);
+            }
+            if ($message->has('MsgType')) {
+                return parent::handleMessage($message->toArray());
             }
             $handler = $this->getDefaultHandler($message->get('InfoType'));
             $result = $handler->handle($message);
