@@ -18,7 +18,8 @@
       "WeChat\\": "src\\"
     },
     "files": [
-      "src/WeChat/Payment/helpers.php"
+      "src/WeChat/Payment/helpers.php",
+      "src/helpers.php"
     ]
   },
   "repositories": {
