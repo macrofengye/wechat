@@ -9,8 +9,8 @@ namespace WeChat\Providers;
 
 use Pimple\Container;
 use Pimple\ServiceProviderInterface;
-use WeChat\WeChat\Core\AccessToken;
 use Doctrine\Common\Cache\FilesystemCache;
+use WeChat\WeChat\Core\AccessToken;
 
 class AccessTokenProvider implements ServiceProviderInterface
 {
@@ -27,10 +27,9 @@ class AccessTokenProvider implements ServiceProviderInterface
         $pimple['access_token'] = function (Container $container) {
             try {
                 $weChatConfig = weChatConfig();
-                $cache = new FilesystemCache(ROOT_PATH . '/component/WX/' . WX_TYPE . '/cache/' . $weChatConfig['name']);
+                $cache = new FilesystemCache(sys_get_temp_dir() . '/polymer/' . $weChatConfig['name']);
                 $container['cache'] = $cache;
-                $cls = 'MComponent\WX\\' . WX_TYPE . '\WeChat\Core\AccessToken';
-                return new $cls($weChatConfig['app_id'], $weChatConfig['secret'], $cache);
+                return new AccessToken($weChatConfig['app_id'], $weChatConfig['secret'], $cache);
             } catch (\InvalidArgumentException $e) {
                 return $container['response']
                     ->withStatus(500)
