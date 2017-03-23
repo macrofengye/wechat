@@ -1,7 +1,7 @@
 <?php
-
 namespace WeChat\WeChat\MiniProgram\Encryption;
 
+use WeChat\WeChat\Core\Exceptions\InvalidConfigException;
 use WeChat\WeChat\Encryption\EncryptionException;
 use WeChat\WeChat\Encryption\Encryptor as BaseEncryptor;
 use WeChat\WeChat\Support\Collection;
@@ -9,11 +9,6 @@ use Exception as BaseException;
 
 class Encryptor extends BaseEncryptor
 {
-    /**
-     * {@inheritdoc}.
-     */
-    protected $aesKeyLength = 24;
-
     /**
      * A non-NULL Initialization Vector.
      *
@@ -39,11 +34,13 @@ class Encryptor extends BaseEncryptor
      *
      * @param $encrypted
      *
-     * @return string
+     * @return \WeChat\WeChat\Support\Collection
      */
     public function decryptData($encrypted)
     {
-        return $this->decrypt($encrypted);
+        return new Collection(
+            $this->decrypt($encrypted)
+        );
     }
 
     /**
@@ -60,16 +57,29 @@ class Encryptor extends BaseEncryptor
         try {
             $key = $this->getAESKey();
             $ciphertext = base64_decode($encrypted, true);
-
             $decrypted = openssl_decrypt($ciphertext, 'aes-128-cbc', $key, OPENSSL_RAW_DATA | OPENSSL_NO_PADDING, $this->iv);
-
-            $result = $this->decode($decrypted);
         } catch (BaseException $e) {
             throw new EncryptionException($e->getMessage(), EncryptionException::ERROR_DECRYPT_AES);
         }
+        $result = json_decode($this->decode($decrypted), true);
+        if (null === $result) {
+            throw new EncryptionException('ILLEGAL_BUFFER', EncryptionException::ILLEGAL_BUFFER);
+        }
+        return $result;
+    }
 
-        $result = json_decode($result, true);
-
-        return new Collection($result);
+    /**
+     * Return AESKey.
+     *
+     * @return string
+     *
+     * @throws InvalidConfigException
+     */
+    protected function getAESKey()
+    {
+        if (empty($this->AESKey)) {
+            throw new InvalidConfigException("Configuration mission, 'aes_key' is required.");
+        }
+        return base64_decode($this->AESKey, true);
     }
 }
