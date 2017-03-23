@@ -1,6 +1,6 @@
 {
   "name": "artful/wechat",
-  "description": "基于overtrue/wechat构建的Polyme微信SDK",
+  "description": "基于overtrue/wechat构建的Polymer框架的微信SDK",
   "license": "MIT",
   "authors": [
     {
