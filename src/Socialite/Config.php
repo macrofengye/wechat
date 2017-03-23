@@ -58,7 +58,7 @@ class Config implements ArrayAccess
      *
      * @param string $key
      * @param mixed $value
-     *
+     * @throws \Exception
      * @return array
      */
     public function set($key, $value)
@@ -66,9 +66,7 @@ class Config implements ArrayAccess
         if (is_null($key)) {
             throw new InvalidArgumentException('Invalid config key.');
         }
-
         $keys = explode('.', $key);
-
         while (count($keys) > 1) {
             $key = array_shift($keys);
             if (!isset($this->config[$key]) || !is_array($this->config[$key])) {
@@ -76,10 +74,20 @@ class Config implements ArrayAccess
             }
             $this->config = &$this->config[$key];
         }
-
         $this->config[array_shift($keys)] = $value;
-
         return $this->config;
+    }
+
+    /**
+     * Determine if the given configuration value exists.
+     *
+     * @param  string $key
+     *
+     * @return bool
+     */
+    public function has($key)
+    {
+        return (bool)$this->get($key);
     }
 
     /**
