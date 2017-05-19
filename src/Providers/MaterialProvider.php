@@ -24,12 +24,5 @@ class MaterialProvider implements ServiceProviderInterface
         $pimple['material'] = function ($pimple) {
             return new Material($pimple['access_token']);
         };
-
-        $temporary = function ($pimple) {
-            return new Temporary($pimple['access_token']);
-        };
-
-        $pimple['material_temporary'] = $temporary;
-        $pimple['material.temporary'] = $temporary;
     }
 }
