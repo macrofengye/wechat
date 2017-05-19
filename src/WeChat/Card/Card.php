@@ -90,7 +90,7 @@ class Card extends AbstractAPI
         $params = [
             'card' => [
                 'card_type' => strtoupper($cardType),
-                strtolower($cardType) => array_merge(['base_info' => $baseInfo], $especial, $advancedInfo),
+                strtolower($cardType) => array_merge(['base_info' => $baseInfo], $especial, ['advanced_info' => $advancedInfo]),
             ],
         ];
 
