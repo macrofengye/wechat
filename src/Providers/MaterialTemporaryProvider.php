@@ -24,9 +24,7 @@ class MaterialTemporaryProvider implements ServiceProviderInterface
     public function register(Container $pimple)
     {
         $pimple['material_temporary'] = function (Container $container) {
-            $temporary = function ($pimple) {
-                return new Temporary($pimple['access_token']);
-            };
+            return new Temporary($container['access_token']);
         };
     }
 }
