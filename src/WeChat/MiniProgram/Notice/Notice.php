@@ -33,13 +33,6 @@ class Notice extends BaseNotice
      */
     protected $required = ['touser', 'template_id', 'form_id'];
 
-    public function __construct()
-    {
-        $accessToken = func_get_args()[0];
-
-        parent::__construct($accessToken);
-    }
-
     /**
      * Send notice message.
      */

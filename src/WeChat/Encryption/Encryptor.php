@@ -1,8 +1,8 @@
 <?php
+
 namespace WeChat\WeChat\Encryption;
 
 use WeChat\WeChat\Core\Exceptions\InvalidConfigException;
-use WeChat\WeChat\Core\Exceptions\RuntimeException;
 use WeChat\WeChat\Support\XML;
 use Exception as BaseException;
 
@@ -45,15 +45,9 @@ class Encryptor
      * @param string $appId
      * @param string $token
      * @param string $AESKey
-     *
-     * @throws RuntimeException
      */
     public function __construct($appId, $token, $AESKey)
     {
-        if (!extension_loaded('openssl')) {
-            throw new RuntimeException("The ext 'openssl' is required.");
-        }
-
         $this->appId = $appId;
         $this->token = $token;
         $this->AESKey = $AESKey;
@@ -65,7 +59,7 @@ class Encryptor
      *
      * @param string $xml
      * @param string $nonce
-     * @param int $timestamp
+     * @param int    $timestamp
      *
      * @return string
      */
@@ -161,7 +155,7 @@ class Encryptor
             $tmp .= $padChr;
         }
 
-        return $text . $tmp;
+        return $text.$tmp;
     }
 
     /**
@@ -196,10 +190,10 @@ class Encryptor
         }
 
         if (strlen($this->AESKey) !== 43) {
-            throw new InvalidConfigException("The length of 'aes_key' must be {$this->aesKeyLength}.");
+            throw new InvalidConfigException("The length of 'aes_key' must be 43.");
         }
 
-        return base64_decode($this->AESKey . '=', true);
+        return base64_decode($this->AESKey.'=', true);
     }
 
     /**
@@ -217,7 +211,7 @@ class Encryptor
         try {
             $key = $this->getAESKey();
             $random = $this->getRandomStr();
-            $text = $this->encode($random . pack('N', strlen($text)) . $text . $appId);
+            $text = $this->encode($random.pack('N', strlen($text)).$text.$appId);
 
             $iv = substr($key, 0, 16);
 

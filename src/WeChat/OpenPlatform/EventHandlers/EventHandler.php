@@ -1,17 +1,12 @@
 <?php
 namespace WeChat\WeChat\OpenPlatform\EventHandlers;
 
-use WeChat\WeChat\Support\Collection;
-
-interface EventHandler
+abstract class EventHandler
 {
     /**
-     * Handle event.
+     * Handle an incoming event message from WeChat server-side.
      *
-     * @param Collection $message
-     *
-     * @return mixed
+     * @param \WeChat\WeChat\Support\Collection $message
      */
-    public function handle(Collection $message);
-
+    abstract public function handle($message);
 }

@@ -1,7 +1,13 @@
 <?php
 namespace WeChat\WeChat\OpenPlatform\EventHandlers;
 
-class UpdateAuthorized extends Authorized
+class UpdateAuthorized extends EventHandler
 {
-    // Is this necessary to handle differently from Authorized?
+    /**
+     * {@inheritdoc}
+     */
+    public function handle($message)
+    {
+        // Do nothing for the time being.
+    }
 }

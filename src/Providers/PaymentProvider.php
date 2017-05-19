@@ -2,6 +2,7 @@
 
 namespace WeChat\Providers;
 
+use WeChat\WeChat\Payment\CashCoupon\CashCoupon;
 use WeChat\WeChat\Payment\LuckyMoney\LuckyMoney;
 use WeChat\WeChat\Payment\Merchant;
 use WeChat\WeChat\Payment\MerchantPay\MerchantPay;
@@ -34,7 +35,12 @@ class PaymentProvider implements ServiceProviderInterface
         };
 
         $pimple['payment'] = function ($pimple) {
-            return new Payment($pimple['merchant']);
+            $payment = new Payment($pimple['merchant']);
+            $payment->sandboxMode(
+                (bool)app()->config('payment.sandbox_mode')
+            );
+
+            return $payment;
         };
 
         $pimple['lucky_money'] = function ($pimple) {
@@ -43,6 +49,9 @@ class PaymentProvider implements ServiceProviderInterface
 
         $pimple['merchant_pay'] = function ($pimple) {
             return new MerchantPay($pimple['merchant']);
+        };
+        $pimple['cash_coupon'] = function ($pimple) {
+            return new CashCoupon($pimple['merchant']);
         };
     }
 }

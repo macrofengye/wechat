@@ -1,11 +1,10 @@
 <?php
+
 namespace WeChat\WeChat\OpenPlatform;
 
-use WeChat\WeChat\Core\Exceptions\InvalidArgumentException;
 use WeChat\WeChat\Server\Guard as ServerGuard;
 use WeChat\WeChat\Support\Collection;
-use Pimple\Container;
-use Slim\Http\Request;
+use WeChat\WeChat\Support\Log;
 use Slim\Http\Response;
 
 class Guard extends ServerGuard
@@ -16,132 +15,100 @@ class Guard extends ServerGuard
     const EVENT_COMPONENT_VERIFY_TICKET = 'component_verify_ticket';
 
     /**
-     * Container in the scope of the open platform authorization.
+     * Event handlers.
      *
-     * @var Container
+     * @var \WeChat\WeChat\Support\Collection
      */
-    protected $container;
+    protected $handlers;
 
     /**
-     * Sets the container for use of event handlers.
+     * Set handlers.
      *
-     * @param Container $container
-     *
-     * @see getDefaultHandler()
+     * @param array $handlers
      */
-    public function setContainer(Container $container)
+    public function setHandlers(array $handlers)
     {
-        $this->container = $container;
+        $this->handlers = new Collection($handlers);
+
+        return $this;
     }
 
     /**
-     * @inheritdoc
-     * @throws \Exception
+     * Get handlers.
+     *
+     * @return \WeChat\WeChat\Support\Collection
+     */
+    public function getHandlers()
+    {
+        return $this->handlers;
+    }
+
+    /**
+     * Get handler.
+     *
+     * @param string $type
+     *
+     * @return \WeChat\WeChat\OpenPlatform\EventHandlers\EventHandler|null
+     */
+    public function getHandler($type)
+    {
+        return $this->handlers->get($type);
+    }
+
+    /**
+     * {@inheritdoc}
      */
     public function serve()
     {
-        // If sees the `auth_code` query parameter in the url, that is,
-        // authorization is successful and it calls back, meanwhile, an
-        // ` authorized` event, which also includes the auth code, is sent
-        // from WeChat, and that event will be handled.
-        if ($this->request->getParam('auth_code')) {
-            return $this->response->write('success');
-        }
         $message = $this->getMessage();
-        $this->handleMessage($message);
+
         // Handle Messages.
         if (isset($message['MsgType'])) {
             return parent::serve();
         }
-        return $this->response->write('success');
+
+        Log::debug('OpenPlatform Request received:', [
+            'Method' => $this->request->getMethod(),
+            'URI' => $this->request->getRequestUri(),
+            'Query' => $this->request->getQueryString(),
+            'Protocal' => $this->request->server->get('SERVER_PROTOCOL'),
+            'Content' => $this->request->getContent(),
+        ]);
+
+        // If sees the `auth_code` query parameter in the url, that is,
+        // authorization is successful and it calls back, meanwhile, an
+        // `authorized` event, which also includes the auth code, is sent
+        // from WeChat, and that event will be handled.
+        if ($this->request->get('auth_code')) {
+            return new Response(self::SUCCESS_EMPTY_RESPONSE);
+        }
+
+        $this->handleEventMessage($message);
+
+        return new Response(self::SUCCESS_EMPTY_RESPONSE);
     }
 
     /**
-     * Return for laravel-wechat.
+     * Handle event message.
      *
-     * @return array
-     * @throws \Exception
+     * @param array $message
      */
-    public function listServe()
+    protected function handleEventMessage(array $message)
     {
-        $message = $this->getMessage();
-        $this->handleMessage($message);
+        Log::debug('OpenPlatform Event Message detail:', $message);
+
         $message = new Collection($message);
-        return [
-            $message->get('InfoType'), $message,
-        ];
-    }
 
-    /**
-     * Listen for wechat push event.
-     *
-     * @param callable|null $callback
-     *
-     * @return mixed
-     *
-     * @throws InvalidArgumentException | \Exception
-     */
-    public function listen($callback = null)
-    {
-        try {
-            if ($callback) {
-                $this->setMessageHandler($callback);
-            }
-            return $this->serve();
-        } catch (\Exception $e) {
-            throw $e;
+        $infoType = $message->get('InfoType');
+
+        if ($handler = $this->getHandler($infoType)) {
+            $handler->handle($message);
+        } else {
+            Log::notice("No existing handler for '{$infoType}'.");
         }
-    }
 
-    /**
-     * @inheritdoc
-     * @throws \Exception
-     */
-    protected function handleMessage($message)
-    {
-        try {
-            if (is_array($message)) {
-                $message = new Collection($message);
-            }
-            if ($message->has('MsgType')) {
-                return parent::handleMessage($message->toArray());
-            }
-            $handler = $this->getDefaultHandler($message->get('InfoType'));
-            $result = $handler->handle($message);
-            if (is_array($result) || $result instanceof Collection) {
-                $message->merge($result);
-            } else {
-                if (!empty($result)) {
-                    $message->set('result', $result);
-                }
-            }
-            if ($customHandler = $this->getMessageHandler()) {
-                $customHandler($message);
-            }
-            return $result;
-        } catch (\Exception $e) {
-            throw $e;
-        }
-    }
-
-    /**
-     * Gets the default handler by the info type.
-     *
-     * @param $type
-     *
-     * @return EventHandlers\EventHandler
-     * @throws InvalidArgumentException | \Exception
-     */
-    protected function getDefaultHandler($type)
-    {
-        try {
-            $handler = $this->container->offsetGet("open_platform.handlers.{$type}");
-            if (!$handler) {
-                throw new InvalidArgumentException("EventHandler \"$type\" does not exists.");
-            }
-            return $handler;
-        } catch (\Exception $e) {
-            throw $e;
+        if ($messageHandler = $this->getMessageHandler()) {
+            call_user_func_array($messageHandler, [$message]);
         }
     }
 }

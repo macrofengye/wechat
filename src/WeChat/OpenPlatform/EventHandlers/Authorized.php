@@ -1,28 +1,14 @@
 <?php
+
 namespace WeChat\WeChat\OpenPlatform\EventHandlers;
 
-use WeChat\WeChat\OpenPlatform\Authorization;
-use WeChat\WeChat\Support\Collection;
-
-class Authorized implements EventHandler
+class Authorized extends EventHandler
 {
     /**
-     * @var Authorization
-     */
-    protected $authorization;
-
-    public function __construct(Authorization $authorization)
-    {
-        $this->authorization = $authorization;
-    }
-
-    /**
      * {@inheritdoc}.
-     * @throws \Exception
      */
-    public function handle(Collection $message)
+    public function handle($message)
     {
-        $this->authorization->setFromAuthMessage($message);
-        return $this->authorization->handleAuthorization();
+        // Do nothing for the time being.
     }
 }

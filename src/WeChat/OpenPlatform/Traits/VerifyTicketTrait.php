@@ -8,7 +8,7 @@ trait VerifyTicketTrait
     /**
      * Verify Ticket.
      *
-     * @var \WeChat\OpenPlatform\VerifyTicket
+     * @var \WeChat\WeChat\OpenPlatform\VerifyTicket
      */
     protected $verifyTicket;
 

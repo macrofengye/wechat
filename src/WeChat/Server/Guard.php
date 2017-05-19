@@ -10,7 +10,6 @@ use WeChat\WeChat\Message\Raw as RawMessage;
 use WeChat\WeChat\Message\Text;
 use WeChat\WeChat\Support\Collection;
 use WeChat\WeChat\Support\Log;
-use WeChat\WeChat\Support\Str;
 use WeChat\WeChat\Support\XML;
 use Slim\Http\Request;
 use Slim\Http\Response;
@@ -357,16 +356,6 @@ class Guard
     }
 
     /**
-     * Get the collected request message.
-     *
-     * @return Collection
-     */
-    public function getCollectedMessage()
-    {
-        return new Collection($this->getMessage());
-    }
-
-    /**
      * Handle request.
      *
      * @return array
@@ -393,7 +382,7 @@ class Guard
      *
      * @return mixed
      */
-    protected function handleMessage($message)
+    protected function handleMessage(array $message)
     {
         $handler = $this->messageHandler;
 
@@ -469,8 +458,9 @@ class Guard
     {
         $content = strval($content);
 
-        if (Str::isJson($content)) {
-            return Str::json2Array($content);
+        $arrayAble = json_decode($content, true);
+        if (json_last_error() === JSON_ERROR_NONE) {
+            return $arrayAble;
         }
 
         if ($this->isSafeMode()) {

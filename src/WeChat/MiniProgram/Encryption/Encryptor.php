@@ -1,4 +1,5 @@
 <?php
+
 namespace WeChat\WeChat\MiniProgram\Encryption;
 
 use WeChat\WeChat\Core\Exceptions\InvalidConfigException;
@@ -48,7 +49,7 @@ class Encryptor extends BaseEncryptor
      *
      * @param string $encrypted
      *
-     * @return Collection
+     * @return array
      *
      * @throws EncryptionException
      */
@@ -61,10 +62,13 @@ class Encryptor extends BaseEncryptor
         } catch (BaseException $e) {
             throw new EncryptionException($e->getMessage(), EncryptionException::ERROR_DECRYPT_AES);
         }
+
         $result = json_decode($this->decode($decrypted), true);
-        if (null === $result) {
+
+        if (is_null($result)) {
             throw new EncryptionException('ILLEGAL_BUFFER', EncryptionException::ILLEGAL_BUFFER);
         }
+
         return $result;
     }
 
@@ -80,6 +84,7 @@ class Encryptor extends BaseEncryptor
         if (empty($this->AESKey)) {
             throw new InvalidConfigException("Configuration mission, 'aes_key' is required.");
         }
+
         return base64_decode($this->AESKey, true);
     }
 }

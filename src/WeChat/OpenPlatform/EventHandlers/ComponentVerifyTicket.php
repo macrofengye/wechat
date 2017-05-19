@@ -1,25 +1,33 @@
 <?php
+
 namespace WeChat\WeChat\OpenPlatform\EventHandlers;
 
-use WeChat\WeChat\OpenPlatform\Traits\VerifyTicketTrait;
 use WeChat\WeChat\OpenPlatform\VerifyTicket;
-use WeChat\WeChat\Support\Collection;
 
-class ComponentVerifyTicket implements EventHandler
+class ComponentVerifyTicket extends EventHandler
 {
-    use VerifyTicketTrait;
+    /**
+     * VerifyTicket.
+     *
+     * @var \WeChat\WeChat\OpenPlatform\VerifyTicket
+     */
+    protected $verifyTicket;
 
+    /**
+     * Constructor.
+     *
+     * @param \WeChat\WeChat\OpenPlatform\VerifyTicket $verifyTicket
+     */
     public function __construct(VerifyTicket $verifyTicket)
     {
-        $this->setVerifyTicket($verifyTicket);
+        $this->verifyTicket = $verifyTicket;
     }
 
     /**
      * {@inheritdoc}.
      */
-    public function handle(Collection $message)
+    public function handle($message)
     {
-        $this->getVerifyTicket()->cache($message);
-        return $message;
+        $this->verifyTicket->setTicket($message->get('ComponentVerifyTicket'));
     }
 }

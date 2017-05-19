@@ -3,7 +3,6 @@ namespace WeChat\WeChat\OpenPlatform\Components;
 
 use WeChat\WeChat\Core\Exceptions\InvalidArgumentException;
 use WeChat\WeChat\Core\Exceptions\RuntimeException;
-use WeChat\WeChat\Support\Url;
 
 class PreAuthCode extends AbstractComponent
 {

@@ -2,17 +2,12 @@
 
 namespace WeChat\WeChat\MiniProgram\Material;
 
-use WeChat\WeChat\Material\Temporary as BaseTemporary;
+use WeChat\WeChat\Material\Temporary as MaterialTemporary;
 
 /**
  * Class Temporary.
  */
-class Temporary extends BaseTemporary
+class Temporary extends MaterialTemporary
 {
-    public function __construct()
-    {
-        $accessToken = func_get_args()[0];
-
-        parent::__construct($accessToken);
-    }
+    //
 }

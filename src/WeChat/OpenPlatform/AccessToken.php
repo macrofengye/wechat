@@ -1,14 +1,18 @@
 <?php
+
 namespace WeChat\WeChat\OpenPlatform;
 
-use Doctrine\Common\Cache\Cache;
-use WeChat\WeChat\Core\AccessToken as WechatAccessToken;
+use WeChat\WeChat\Core\AccessToken as CoreAccessToken;
 use WeChat\WeChat\Core\Exceptions\HttpException;
-use WeChat\WeChat\OpenPlatform\Traits\VerifyTicketTrait;
 
-class AccessToken extends WechatAccessToken
+class AccessToken extends CoreAccessToken
 {
-    use VerifyTicketTrait;
+    /**
+     * VerifyTicket.
+     *
+     * @var \EasyWeChat\OpenPlatform\VerifyTicket
+     */
+    protected $verifyTicket;
 
     /**
      * API.
@@ -28,26 +32,24 @@ class AccessToken extends WechatAccessToken
     /**
      * {@inheritdoc}.
      */
-    protected $prefix = 'wechat.open_platform.component_access_token.';
+    protected $prefix = 'easywechat.open_platform.component_access_token.';
 
     /**
-     * AccessToken constructor.
+     * Set VerifyTicket.
      *
-     * @param string $appId
-     * @param string $secret
-     * @param Cache $cache
-     * @param VerifyTicket $verifyTicket
+     * @param WeChat\WeChat\OpenPlatform\VerifyTicket $verifyTicket
+     *
+     * @return $this
      */
-    public function __construct($appId, $secret, VerifyTicket $verifyTicket, Cache $cache = null)
+    public function setVerifyTicket(VerifyTicket $verifyTicket)
     {
-        parent::__construct($appId, $secret, $cache);
+        $this->verifyTicket = $verifyTicket;
 
-        $this->setVerifyTicket($verifyTicket);
+        return $this;
     }
 
     /**
      * {@inheritdoc}.
-     * @throws \Exception | \WeChat\WeChat\Core\Exceptions\RuntimeException
      */
     public function getTokenFromServer()
     {
@@ -56,11 +58,15 @@ class AccessToken extends WechatAccessToken
             'component_appsecret' => $this->secret,
             'component_verify_ticket' => $this->verifyTicket->getTicket(),
         ];
+
         $http = $this->getHttp();
+
         $token = $http->parseJSON($http->json(self::API_TOKEN_GET, $data));
+
         if (empty($token[$this->tokenJsonKey])) {
-            throw new HttpException('Request ComponentAccessToken fail. response: ' . json_encode($token, JSON_UNESCAPED_UNICODE));
+            throw new HttpException('Request ComponentAccessToken fail. response: '.json_encode($token, JSON_UNESCAPED_UNICODE));
         }
+
         return $token;
     }
 }

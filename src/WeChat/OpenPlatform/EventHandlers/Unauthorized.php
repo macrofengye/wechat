@@ -1,18 +1,13 @@
 <?php
 namespace WeChat\WeChat\OpenPlatform\EventHandlers;
 
-use WeChat\WeChat\Support\Collection;
-
-class Unauthorized extends Authorized
+class Unauthorized extends EventHandler
 {
     /**
-     * @inheritdoc
+     * {@inheritdoc}.
      */
-    public function handle(Collection $message)
+    public function handle($message)
     {
-        $this->authorization->setFromAuthMessage($message);
-        $this->authorization->removeAuthorizerAccessToken();
-        $this->authorization->removeAuthorizerRefreshToken();
-        return $message;
+        // Do nothing for the time being.
     }
 }

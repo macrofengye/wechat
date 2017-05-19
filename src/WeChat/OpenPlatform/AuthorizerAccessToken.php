@@ -1,0 +1,84 @@
+<?php
+
+namespace WeChat\WeChat\OpenPlatform;
+
+// Don't change the alias name please. I met the issue "name already in use"
+// when used in Laravel project, not sure what is causing it, this is quick
+// solution.
+use WeChat\WeChat\Core\AccessToken as BaseAccessToken;
+
+/**
+ * Class AuthorizerAccessToken.
+ *
+ * AuthorizerAccessToken is responsible for the access token of the authorizer,
+ * the complexity is that this access token also requires the refresh token
+ * of the authorizer which is acquired by the open platform authorizer process.
+ *
+ * This completely overrides the original AccessToken.
+ */
+class AuthorizerAccessToken extends BaseAccessToken
+{
+    /**
+     * @var \WeChat\WeChat\OpenPlatform\Authorizer
+     */
+    protected $authorizer;
+
+    /**
+     * AuthorizerAccessToken constructor.
+     *
+     * @param string                              $appId
+     * @param \WeChat\WeChat\OpenPlatform\Authorizer $authorizer
+     */
+    public function __construct($appId, Authorizer $authorizer)
+    {
+        parent::__construct($appId, null);
+
+        $this->authorizer = $authorizer;
+    }
+
+    /**
+     * Get token from WeChat API.
+     *
+     * @param bool $forceRefresh
+     *
+     * @return string
+     */
+    public function getToken($forceRefresh = false)
+    {
+        $cached = $this->authorizer->getAccessToken();
+
+        if ($forceRefresh || empty($cached)) {
+            return $this->renewAccessToken();
+        }
+
+        return $cached;
+    }
+
+    /**
+     * Refresh authorizer access token.
+     *
+     * @return string
+     */
+    protected function renewAccessToken()
+    {
+        $token = $this->authorizer->getApi()
+            ->getAuthorizerToken(
+                $this->authorizer->getAppId(),
+                $this->authorizer->getRefreshToken()
+            );
+
+        $this->authorizer->setAccessToken($token['authorizer_access_token'], $token['expires_in'] - 1500);
+
+        return $token['authorizer_access_token'];
+    }
+
+    /**
+     * Return the AuthorizerAppId.
+     *
+     * @return string
+     */
+    public function getAppId()
+    {
+        return $this->authorizer->getAppId();
+    }
+}
