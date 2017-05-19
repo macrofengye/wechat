@@ -58,7 +58,8 @@ class Encryptor extends BaseEncryptor
         try {
             $key = $this->getAESKey();
             $ciphertext = base64_decode($encrypted, true);
-            $decrypted = openssl_decrypt($ciphertext, 'aes-128-cbc', $key, OPENSSL_RAW_DATA | OPENSSL_NO_PADDING, $this->iv);
+            $decrypted = openssl_decrypt($ciphertext, 'aes-128-cbc', $key, OPENSSL_RAW_DATA | OPENSSL_NO_PADDING,
+                $this->iv);
         } catch (BaseException $e) {
             throw new EncryptionException($e->getMessage(), EncryptionException::ERROR_DECRYPT_AES);
         }

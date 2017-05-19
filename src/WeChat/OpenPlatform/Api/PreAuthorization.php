@@ -48,8 +48,7 @@ class PreAuthorization extends AbstractOpenPlatform
      */
     public function redirect($url)
     {
-        return new RedirectResponse(
-            sprintf(self::PRE_AUTH_LINK, $this->getAppId(), $this->getCode(), urlencode($url))
-        );
+        $this->response->withRedirect(sprintf(self::PRE_AUTH_LINK, $this->getAppId(), $this->getCode(),
+            urlencode($url)));
     }
 }

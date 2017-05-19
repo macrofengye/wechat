@@ -69,23 +69,23 @@ class Guard extends ServerGuard
 
         Log::debug('OpenPlatform Request received:', [
             'Method' => $this->request->getMethod(),
-            'URI' => $this->request->getRequestUri(),
-            'Query' => $this->request->getQueryString(),
-            'Protocal' => $this->request->server->get('SERVER_PROTOCOL'),
-            'Content' => $this->request->getContent(),
+            'URI' => $this->request->getUri(),
+            'Query' => $this->request->getQueryParams(),
+            'Protocal' => $this->request->getServerParam('SERVER_PROTOCOL'),
+            'Content' => $this->request->getBody(),
         ]);
 
         // If sees the `auth_code` query parameter in the url, that is,
         // authorization is successful and it calls back, meanwhile, an
         // `authorized` event, which also includes the auth code, is sent
         // from WeChat, and that event will be handled.
-        if ($this->request->get('auth_code')) {
-            return new Response(self::SUCCESS_EMPTY_RESPONSE);
+        if ($this->request->getParam('auth_code')) {
+            return $this->response->write(self::SUCCESS_EMPTY_RESPONSE);
         }
 
         $this->handleEventMessage($message);
 
-        return new Response(self::SUCCESS_EMPTY_RESPONSE);
+        return $this->response->write(self::SUCCESS_EMPTY_RESPONSE);
     }
 
     /**

@@ -30,7 +30,7 @@ trait PrefixedContainer
     /**
      * Fetches from pimple container.
      *
-     * @param string        $key
+     * @param string $key
      * @param callable|null $callable
      *
      * @return mixed
@@ -64,7 +64,7 @@ trait PrefixedContainer
     {
         $className = basename(str_replace('\\', '/', static::class));
 
-        $name = Str::snake($className).'.'.$key;
+        $name = Str::snake($className) . '.' . $key;
 
         return $this->container->offsetGet($name);
     }

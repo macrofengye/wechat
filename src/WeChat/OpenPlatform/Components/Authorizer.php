@@ -39,7 +39,7 @@ class Authorizer extends AbstractComponent
     {
         $data = [
             'component_appid' => $this->getAppId(),
-            'authorization_code' => $authCode ?: $this->request->get('auth_code'),
+            'authorization_code' => $authCode ?: $this->request->getParam('auth_code'),
         ];
         return $this->parseJSON('json', [self::GET_AUTH_INFO, $data]);
     }

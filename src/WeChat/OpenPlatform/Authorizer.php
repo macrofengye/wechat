@@ -21,7 +21,7 @@ class Authorizer
     /**
      * Base API.
      *
-     * @var \EasyWeChat\OpenPlatform\Api\BaseApi
+     * @var \WeChat\WeChat\OpenPlatform\Api\BaseApi
      */
     protected $api;
 
@@ -43,8 +43,8 @@ class Authorizer
      * Authorizer Constructor.
      *
      * @param \WeChat\WeChat\OpenPlatform\Api\BaseApi $api
-     * @param string                               $openPlatformAppId OpenPlatform AppId
-     * @param \Doctrine\Common\Cache\Cache         $cache
+     * @param string $openPlatformAppId OpenPlatform AppId
+     * @param \Doctrine\Common\Cache\Cache $cache
      */
     public function __construct(BaseApi $api, $openPlatformAppId, Cache $cache)
     {
@@ -99,7 +99,7 @@ class Authorizer
      * Saves the authorizer access token in cache.
      *
      * @param string $token
-     * @param int    $expires
+     * @param int $expires
      *
      * @return $this
      */
@@ -159,7 +159,7 @@ class Authorizer
      */
     public function getAccessTokenCacheKey()
     {
-        return self::CACHE_KEY_ACCESS_TOKEN.$this->appId.$this->getAppId();
+        return self::CACHE_KEY_ACCESS_TOKEN . $this->appId . $this->getAppId();
     }
 
     /**
@@ -169,6 +169,6 @@ class Authorizer
      */
     public function getRefreshTokenCacheKey()
     {
-        return self::CACHE_KEY_REFRESH_TOKEN.$this->appId.$this->getAppId();
+        return self::CACHE_KEY_REFRESH_TOKEN . $this->appId . $this->getAppId();
     }
 }

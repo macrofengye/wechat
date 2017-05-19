@@ -35,13 +35,13 @@ abstract class AbstractComponent extends AbstractAPI
      *
      * @param AccessToken $accessToken
      * @param array $config
-     * @param $request
+     * @param \Slim\Http\Request $request
      */
-    public function __construct($accessToken, array $config, $request = null)
+    public function __construct($accessToken, array $config, Request $request)
     {
         parent::__construct($accessToken);
         $this->config = $config;
-        $this->request = $request ?: Request::createFromGlobals();
+        $this->request = $request;
     }
 
     /**

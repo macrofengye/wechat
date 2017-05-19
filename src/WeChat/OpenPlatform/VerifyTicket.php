@@ -38,7 +38,7 @@ class VerifyTicket
     /**
      * VerifyTicket constructor.
      *
-     * @param string                       $appId
+     * @param string $appId
      * @param \Doctrine\Common\Cache\Cache $cache
      */
     public function __construct($appId, Cache $cache)
@@ -97,7 +97,7 @@ class VerifyTicket
     public function getCacheKey()
     {
         if (is_null($this->cacheKey)) {
-            return $this->prefix.$this->appId;
+            return $this->prefix . $this->appId;
         }
 
         return $this->cacheKey;

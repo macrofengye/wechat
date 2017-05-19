@@ -10,7 +10,7 @@ class AccessToken extends CoreAccessToken
     /**
      * VerifyTicket.
      *
-     * @var \EasyWeChat\OpenPlatform\VerifyTicket
+     * @var \WeChat\WeChat\OpenPlatform\VerifyTicket
      */
     protected $verifyTicket;
 
@@ -37,7 +37,7 @@ class AccessToken extends CoreAccessToken
     /**
      * Set VerifyTicket.
      *
-     * @param WeChat\WeChat\OpenPlatform\VerifyTicket $verifyTicket
+     * @param \WeChat\WeChat\OpenPlatform\VerifyTicket $verifyTicket
      *
      * @return $this
      */
