@@ -1,17 +1,9 @@
 <?php
 
-/*
- * This file is part of the overtrue/socialite.
- *
- * (c) overtrue <i@overtrue.me>
- *
- * This source file is subject to the MIT license that is bundled
- * with this source code in the file LICENSE.
- */
+namespace WeChat\Socialite\Providers;
 
-namespace Overtrue\Socialite\Providers;
+use Slim\Http\Request;
 
-use Symfony\Component\HttpFoundation\Request;
 
 /**
  * Class WeChatProvider.
@@ -39,7 +31,7 @@ class WeChatOpenPlatformProvider extends WeChatProvider
     protected $componentAccessToken;
 
     /**
-     * @var \EasyWeChat\OpenPlatform\AccessToken|array
+     * @var \WeChat\WeChat\OpenPlatform\AccessToken|array
      */
     protected $credentials;
 
@@ -52,10 +44,10 @@ class WeChatOpenPlatformProvider extends WeChatProvider
      * Create a new provider instance.
      * (Overriding).
      *
-     * @param \Symfony\Component\HttpFoundation\Request  $request
-     * @param string                                     $clientId
-     * @param \EasyWeChat\OpenPlatform\AccessToken|array $credentials
-     * @param string|null                                $redirectUrl
+     * @param \Slim\Http\Request $request
+     * @param string $clientId
+     * @param \WeChat\WeChat\OpenPlatform\AccessToken|array $credentials
+     * @param string|null $redirectUrl
      */
     public function __construct(Request $request, $clientId, $credentials, $redirectUrl = null)
     {
@@ -82,7 +74,7 @@ class WeChatOpenPlatformProvider extends WeChatProvider
      */
     protected function getTokenUrl()
     {
-        return $this->baseUrl.'/oauth2/component/access_token';
+        return $this->baseUrl . '/oauth2/component/access_token';
     }
 
     /**

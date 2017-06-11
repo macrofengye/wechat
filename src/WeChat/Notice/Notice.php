@@ -1,4 +1,5 @@
 <?php
+
 namespace WeChat\WeChat\Notice;
 
 use WeChat\WeChat\Core\AbstractAPI;
@@ -54,13 +55,28 @@ class Notice extends AbstractAPI
     /**
      * Notice constructor.
      *
-     * @param \WeChat\Core\AccessToken $accessToken
+     * @param \WeChat\WeChat\Core\AccessToken $accessToken
      */
     public function __construct(AccessToken $accessToken)
     {
         parent::__construct($accessToken);
 
         $this->messageBackup = $this->message;
+    }
+
+
+    /**
+     * Set default color
+     *
+     * @param string $color example: #0f0f0f
+     *
+     * @return $this
+     */
+    public function defaultColor($color)
+    {
+        $this->defaultColor = $color;
+
+        return $this;
     }
 
     /**

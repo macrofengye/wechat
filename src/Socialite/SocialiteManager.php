@@ -1,4 +1,5 @@
 <?php
+
 namespace WeChat\Socialite;
 
 use Closure;
@@ -44,6 +45,7 @@ class SocialiteManager implements FactoryInterface
         'weibo' => 'Weibo',
         'qq' => 'QQ',
         'wechat' => 'WeChat',
+        'wechat_open' => 'WeChatOpenPlatform',
         'douban' => 'Douban',
     ];
 
@@ -193,7 +195,7 @@ class SocialiteManager implements FactoryInterface
     public function buildProvider($provider, $config)
     {
         return new $provider(
-            $this->request, $this->config, $config['client_id'],
+            $this->request, $config['client_id'],
             $config['client_secret'], $config['redirect']
         );
     }

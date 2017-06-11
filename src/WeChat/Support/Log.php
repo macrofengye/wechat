@@ -1,6 +1,8 @@
 <?php
+
 namespace WeChat\WeChat\Support;
 
+use Monolog\Handler\ErrorLogHandler;
 use Monolog\Handler\NullHandler;
 use Monolog\Handler\StreamHandler;
 use Monolog\Logger;
@@ -83,11 +85,10 @@ class Log
     {
         $log = new Logger('MacroWeChat');
 
-        if (defined('PHPUNIT_RUNNING')) {
+        if (defined('PHPUNIT_RUNNING') || PHP_SAPI === 'cli') {
             $log->pushHandler(new NullHandler());
         } else {
-            //$log->pushHandler(new ErrorLogHandler());
-            $log->pushHandler(new StreamHandler(APP_PATH . '/log/wechat_debug.log', Logger::DEBUG));
+            $log->pushHandler(new ErrorLogHandler());
         }
 
         return $log;

@@ -1,4 +1,5 @@
 <?php
+
 namespace WeChat\WeChat\Message;
 
 /**
@@ -34,13 +35,12 @@ class Music extends AbstractMessage
         'format',
     ];
 
-
     /**
      * 设置视频封面.
      *
      * @param string $mediaId
      *
-     * @return Video
+     * @return $this
      */
     public function thumb($mediaId)
     {
