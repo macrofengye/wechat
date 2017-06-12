@@ -22,7 +22,7 @@ class OpenPlatform
     use PrefixedContainer;
 
     /**
-     * Create an instance of the EasyWeChat for the given authorizer.
+     * Create an instance of the WeChat for the given authorizer.
      *
      * @param string $appId        Authorizer AppId
      * @param string $refreshToken Authorizer refresh-token

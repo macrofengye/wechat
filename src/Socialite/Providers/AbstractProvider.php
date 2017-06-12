@@ -1,4 +1,5 @@
 <?php
+
 namespace WeChat\Socialite\Providers;
 
 use GuzzleHttp\Client;
@@ -59,13 +60,6 @@ abstract class AbstractProvider implements ProviderInterface
     protected $scopes = [];
 
     /**
-     * The configuration.
-     *
-     * @var \WeChat\Socialite\Config
-     */
-    protected $config;
-
-    /**
      * The separating character for the requested scopes.
      *
      * @var string
@@ -95,10 +89,9 @@ abstract class AbstractProvider implements ProviderInterface
      * @param string $clientSecret
      * @param string|null $redirectUrl
      */
-    public function __construct(Request $request, $config, $clientId, $clientSecret, $redirectUrl = null)
+    public function __construct(Request $request, $clientId, $clientSecret, $redirectUrl = null)
     {
         $this->request = $request;
-        $this->config = $config;
         $this->clientId = $clientId;
         $this->clientSecret = $clientSecret;
         $this->redirectUrl = $redirectUrl;
@@ -390,7 +383,8 @@ abstract class AbstractProvider implements ProviderInterface
         }
 
         if (empty($body['access_token'])) {
-            throw new AuthorizeFailedException('Authorize Failed: ' . json_encode($body, JSON_UNESCAPED_UNICODE), $body);
+            throw new AuthorizeFailedException('Authorize Failed: ' . json_encode($body, JSON_UNESCAPED_UNICODE),
+                $body);
         }
 
         return new AccessToken($body);
@@ -447,7 +441,7 @@ abstract class AbstractProvider implements ProviderInterface
      */
     protected function arrayItem(array $array, $key, $default = null)
     {
-        if (is_null($key)) {
+        if (null === $key) {
             return $array;
         }
         if (isset($array[$key])) {

@@ -1,5 +1,4 @@
 <?php
-
 namespace WeChat\WeChat\OpenPlatform;
 
 use Doctrine\Common\Cache\Cache;
@@ -8,8 +7,8 @@ use WeChat\WeChat\OpenPlatform\Api\BaseApi;
 
 class Authorizer
 {
-    const CACHE_KEY_ACCESS_TOKEN = 'easywechat.open_platform.authorizer_access_token';
-    const CACHE_KEY_REFRESH_TOKEN = 'easywechat.open_platform.authorizer_refresh_token';
+    const CACHE_KEY_ACCESS_TOKEN = 'macro.open_platform.authorizer_access_token';
+    const CACHE_KEY_REFRESH_TOKEN = 'macro.open_platform.authorizer_refresh_token';
 
     /**
      * Cache.
@@ -43,8 +42,8 @@ class Authorizer
      * Authorizer Constructor.
      *
      * @param \WeChat\WeChat\OpenPlatform\Api\BaseApi $api
-     * @param string $openPlatformAppId OpenPlatform AppId
-     * @param \Doctrine\Common\Cache\Cache $cache
+     * @param string                               $openPlatformAppId OpenPlatform AppId
+     * @param \Doctrine\Common\Cache\Cache         $cache
      */
     public function __construct(BaseApi $api, $openPlatformAppId, Cache $cache)
     {
@@ -99,7 +98,7 @@ class Authorizer
      * Saves the authorizer access token in cache.
      *
      * @param string $token
-     * @param int $expires
+     * @param int    $expires
      *
      * @return $this
      */
@@ -159,7 +158,7 @@ class Authorizer
      */
     public function getAccessTokenCacheKey()
     {
-        return self::CACHE_KEY_ACCESS_TOKEN . $this->appId . $this->getAppId();
+        return self::CACHE_KEY_ACCESS_TOKEN.$this->appId.$this->getAppId();
     }
 
     /**
@@ -169,6 +168,6 @@ class Authorizer
      */
     public function getRefreshTokenCacheKey()
     {
-        return self::CACHE_KEY_REFRESH_TOKEN . $this->appId . $this->getAppId();
+        return self::CACHE_KEY_REFRESH_TOKEN.$this->appId.$this->getAppId();
     }
 }

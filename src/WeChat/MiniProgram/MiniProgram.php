@@ -1,5 +1,4 @@
 <?php
-
 namespace WeChat\WeChat\MiniProgram;
 
 use WeChat\WeChat\Support\Traits\PrefixedContainer;

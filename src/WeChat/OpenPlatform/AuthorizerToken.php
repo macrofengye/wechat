@@ -13,7 +13,7 @@ use WeChat\WeChat\Core\AccessToken as BaseAccessToken;
  *
  * This completely overrides the original AccessToken.
  *
- * @package EasyWeChat\OpenPlatform
+ * @package WeChat\WeChat\OpenPlatform
  */
 class AuthorizerToken extends BaseAccessToken
 {

@@ -1,5 +1,4 @@
 <?php
-
 namespace WeChat\WeChat\MiniProgram\Notice;
 
 use WeChat\WeChat\Notice\Notice as BaseNotice;

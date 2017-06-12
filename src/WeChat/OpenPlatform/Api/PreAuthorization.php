@@ -43,12 +43,13 @@ class PreAuthorization extends AbstractOpenPlatform
      * Redirect to WeChat PreAuthorization page.
      *
      * @param string $url
+     * @throws \Exception
      *
      * @return \Slim\Http\Response
      */
     public function redirect($url)
     {
-        $this->response->withRedirect(sprintf(self::PRE_AUTH_LINK, $this->getAppId(), $this->getCode(),
-            urlencode($url)));
+        return app()->component('response')->withRedirect(sprintf(self::PRE_AUTH_LINK, $this->getAppId(),
+            $this->getCode(), urlencode($url)));
     }
 }

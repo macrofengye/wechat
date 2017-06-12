@@ -1,5 +1,4 @@
 <?php
-
 namespace WeChat\WeChat\MiniProgram\QRCode;
 
 use WeChat\WeChat\MiniProgram\Core\AbstractMiniProgram;

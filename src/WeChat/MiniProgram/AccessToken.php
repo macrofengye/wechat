@@ -12,5 +12,5 @@ class AccessToken extends CoreAccessToken
     /**
      * {@inheritdoc}.
      */
-    protected $prefix = 'polymer.common.mini.program.access_token.';
+    protected $prefix = 'macro.wechat.common.mini.program.access_token.';
 }

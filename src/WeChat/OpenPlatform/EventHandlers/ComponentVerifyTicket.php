@@ -1,5 +1,4 @@
 <?php
-
 namespace WeChat\WeChat\OpenPlatform\EventHandlers;
 
 use WeChat\WeChat\OpenPlatform\VerifyTicket;

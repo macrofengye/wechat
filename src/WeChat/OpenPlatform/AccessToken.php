@@ -32,7 +32,7 @@ class AccessToken extends CoreAccessToken
     /**
      * {@inheritdoc}.
      */
-    protected $prefix = 'easywechat.open_platform.component_access_token.';
+    protected $prefix = 'macro.wechat.open_platform.component_access_token.';
 
     /**
      * Set VerifyTicket.

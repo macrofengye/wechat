@@ -52,7 +52,7 @@ trait PrefixedContainer
      * Get the `class basename` of the current class.
      * Convert `class basename` to snake-case and concatenation with dot notation.
      *
-     * E.g. Class 'EasyWechat', $key foo -> 'easy_wechat.foo'
+     * E.g. Class 'Wechat', $key foo -> 'wechat.foo'
      *
      * @param string $key The unique identifier for the parameter or object
      *
