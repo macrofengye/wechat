@@ -27,8 +27,8 @@ class AccessTokenProvider implements ServiceProviderInterface
         $pimple['access_token'] = function (Container $container) {
             try {
                 $weChatConfig = weChatConfig();
-                $cache = $container['application']->component('wechatCache');
                 $container->offsetSet('weChatCacheName', $weChatConfig['name']);
+                $cache = $container['application']->component('weChat_cache');
                 $container['cache'] = $cache;
                 return new AccessToken($weChatConfig['app_id'], $weChatConfig['secret'], $cache);
             } catch (\Exception $e) {
