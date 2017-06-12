@@ -23,7 +23,7 @@ class WeChatCacheProvider implements ServiceProviderInterface
      */
     public function register(Container $pimple)
     {
-        $pimple['weChat_cache'] = function (Container $container) {
+        $pimple['weChatCache'] = function (Container $container) {
             try {
                 $cache = new FilesystemCache(sys_get_temp_dir() . '/polymer/' . $container->offsetGet('weChatCacheName'));
             } catch (\Exception $e) {

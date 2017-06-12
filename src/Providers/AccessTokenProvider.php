@@ -28,7 +28,7 @@ class AccessTokenProvider implements ServiceProviderInterface
             try {
                 $weChatConfig = weChatConfig();
                 $container->offsetSet('weChatCacheName', $weChatConfig['name']);
-                $cache = $container['application']->component('weChat_cache');
+                $cache = $container['application']->component('weChatCache');
                 $container['cache'] = $cache;
                 return new AccessToken($weChatConfig['app_id'], $weChatConfig['secret'], $cache);
             } catch (\Exception $e) {
