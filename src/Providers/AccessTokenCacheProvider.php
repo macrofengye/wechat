@@ -11,7 +11,7 @@ use Doctrine\Common\Cache\FilesystemCache;
 use Pimple\Container;
 use Pimple\ServiceProviderInterface;
 
-class WeChatCacheProvider implements ServiceProviderInterface
+class AccessTokenCacheProvider implements ServiceProviderInterface
 {
     /**
      * Registers services on the given container.
@@ -23,9 +23,9 @@ class WeChatCacheProvider implements ServiceProviderInterface
      */
     public function register(Container $pimple)
     {
-        $pimple['weChatCache'] = function (Container $container) {
+        $pimple['AccessTokenCache'] = function (Container $container) {
             try {
-                $cache = new FilesystemCache(sys_get_temp_dir() . '/polymer/' . $container->offsetGet('weChatCacheName'));
+                $cache = new FilesystemCache(sys_get_temp_dir() . '/polymer/' . $container->offsetGet('AccessTokenCacheName'));
             } catch (\Exception $e) {
                 $cache = null;
             }
