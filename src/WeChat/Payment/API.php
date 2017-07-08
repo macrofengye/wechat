@@ -192,6 +192,7 @@ class API extends AbstractAPI
      * Make a refund request.
      *
      * @param string $orderNo
+     * @param string $refundNo
      * @param float  $totalFee
      * @param float  $refundFee
      * @param string $opUserId
@@ -226,6 +227,7 @@ class API extends AbstractAPI
      * Refund by transaction id.
      *
      * @param string $orderNo
+     * @param string $refundNo
      * @param float  $totalFee
      * @param float  $refundFee
      * @param string $opUserId

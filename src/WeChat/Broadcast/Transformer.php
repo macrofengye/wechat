@@ -114,12 +114,12 @@ class Transformer
         }
 
         return [
-            'video' => [
+            'mpvideo' => [
                 'media_id' => $message[0],
                 'title' => $message[1],
                 'description' => $message[2],
             ],
-            'msgtype' => 'video',
+            'msgtype' => 'mpvideo',
         ];
     }
 

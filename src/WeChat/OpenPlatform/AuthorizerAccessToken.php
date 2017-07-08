@@ -1,4 +1,5 @@
 <?php
+
 namespace WeChat\WeChat\OpenPlatform;
 
 // Don't change the alias name please. I met the issue "name already in use"
@@ -25,7 +26,7 @@ class AuthorizerAccessToken extends BaseAccessToken
     /**
      * AuthorizerAccessToken constructor.
      *
-     * @param string                              $appId
+     * @param string $appId
      * @param \WeChat\WeChat\OpenPlatform\Authorizer $authorizer
      */
     public function __construct($appId, Authorizer $authorizer)

@@ -72,6 +72,16 @@ class POI extends AbstractAPI
     }
 
     /**
+     * @param array $data
+     *
+     * @return int
+     */
+    public function createAndGetId(array $data)
+    {
+        return $this->create($data)['poi_id'];
+    }
+
+    /**
      * Update a POI.
      *
      * @param int $poiId

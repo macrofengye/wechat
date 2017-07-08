@@ -29,6 +29,8 @@ class BaseApi extends AbstractOpenPlatform
      */
     const SET_AUTHORIZER_OPTION = 'https://api.weixin.qq.com/cgi-bin/component/api_set_authorizer_option';
 
+    const GET_AUTHORIZER_LIST = 'https://api.weixin.qq.com/cgi-bin/component/api_get_authorizer_list';
+
     /**
      * Get authorization info.
      *
@@ -124,5 +126,24 @@ class BaseApi extends AbstractOpenPlatform
         ];
 
         return $this->parseJSON('json', [self::SET_AUTHORIZER_OPTION, $params]);
+    }
+
+    /**
+     * Get authorizer list.
+     *
+     * @param int $offset
+     * @param int $count
+     *
+     * @return \WeChat\WeChat\Support\Collection
+     */
+    public function getAuthorizerList($offset = 0, $count = 500)
+    {
+        $params = [
+            'component_appid' => $this->getAppId(),
+            'offset' => $offset,
+            'count' => $count,
+        ];
+
+        return $this->parseJSON('json', [self::GET_AUTHORIZER_LIST, $params]);
     }
 }

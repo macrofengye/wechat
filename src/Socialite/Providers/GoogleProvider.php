@@ -102,6 +102,7 @@ class GoogleProvider extends AbstractProvider implements ProviderInterface
     {
         return new User([
             'id' => $this->arrayItem($user, 'id'),
+            'username' => $this->arrayItem($user, 'login'),
             'nickname' => $this->arrayItem($user, 'nickname'),
             'name' => $this->arrayItem($user, 'displayName'),
             'email' => $this->arrayItem($user, 'emails.0.value'),
